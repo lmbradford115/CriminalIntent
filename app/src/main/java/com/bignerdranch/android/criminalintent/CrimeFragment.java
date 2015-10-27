@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import android.widget.EditText;
 import android.text.format.DateFormat;
 import java.util.Date;
 import java.util.UUID;
+import android.view.MenuItem;
 
 public class CrimeFragment extends Fragment {
     private static final String ARG_CRIME_ID = "crime_id";
@@ -45,6 +48,7 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
@@ -128,6 +132,25 @@ public class CrimeFragment extends Fragment {
 
     private void updateTime() {
         mTimeButton.setText(DateFormat.format("h:mm a", mCrime.getDate()));
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_crime, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_delete_crime:
+                CrimeLab.get(getActivity()).deleteCrime(mCrime);
+                getActivity().finish();
+                //return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
