@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import android.database.Cursor;
+import java.io.File;
+import android.os.Environment;
 
 /**
  * Created by Luke on 10/12/15.
@@ -87,6 +89,18 @@ public class CrimeLab {
 
 
     }
+
+    public File getPhotoFile(Crime crime) {
+        File externalFilesDir = mContext
+                .getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        if (externalFilesDir == null) {
+            return null;
+        }
+
+        return new File(externalFilesDir, crime.getPhotoFilename());
+    }
+
 
     public void updateCrime(Crime crime) {
         String uuidString = crime.getId().toString();
